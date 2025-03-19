@@ -1,24 +1,24 @@
-version: '3.8'
-
 services:
   backend:
-    image: samurcorrea/rentaride2-backend:latest  
-    container_name: rentaride2back
+    image: samurcorrea/rentaride2-backend:latest
+    container_name: rentaride2back2
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5433/rentaride2
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 620759082
       SPRING_PROFILES_ACTIVE: docker
+      UPLOAD_DIR: file:/app/uploads/
     ports:
       - "8080:8080"
     volumes:
-      - backend_uploads:/app/uploads
+      - ./uploads:/app/uploads   # Monta la carpeta ./uploads en el contenedor
+      - backend_uploads:/app/uploads  # Persistencia de volumen para datos
     networks:
       - app-network
 
   frontend:
-    image: samurcorrea/rentaride2-frontend:latest  
-    container_name: rentaride2front
+    image: samurcorrea/rentaride2-frontend:latest
+    container_name: rentaride2front2
     depends_on:
       - backend
     ports:
@@ -33,4 +33,4 @@ networks:
     driver: bridge
 
 volumes:
-  backend_uploads:
+  backend_uploads:  # Definición del volumen persistente para los archivos
