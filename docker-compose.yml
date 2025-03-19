@@ -11,8 +11,8 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./uploads:/app/uploads   # Monta la carpeta ./uploads en el contenedor
-      - backend_uploads:/app/uploads  # Persistencia de volumen para datos
+      - ./uploads:/app/uploads  
+      - backend_uploads:/app/uploads  
     networks:
       - app-network
 
@@ -33,4 +33,4 @@ networks:
     driver: bridge
 
 volumes:
-  backend_uploads:  # Definición del volumen persistente para los archivos
+  backend_uploads:
