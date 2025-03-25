@@ -21,7 +21,7 @@ services:
 
   # Backend (Spring Boot)
   backend:
-    image: samurcorrea/rentaride2-backend:latest
+    image: samurcorrea/rentaride3-backend:latest
     container_name: rentaride2back
     environment:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/rentaride2"
@@ -43,7 +43,7 @@ services:
 
   # Frontend (Angular)
   frontend:
-    image: samurcorrea/rentaride-frontend:latest
+    image: samurcorrea/rentaride3-frontend:latest
     container_name: rentaride2front
     environment:
       BACKEND_API_URL: "http://host.docker.internal:8080"  # Usa la IP del host
