@@ -1,36 +1,63 @@
 services:
+  # Base de datos PostgreSQL con datos pre-cargados
+  postgres:
+    image: samurcorrea/rentaride-postgres:latest
+    container_name: rentaride_postgres
+    environment:
+      POSTGRES_DB: rentaride2
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 620759082
+    ports:
+      - "5433:5432"
+    #volumes:
+     # - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend (Spring Boot)
   backend:
-    image: samurcorrea/rentaride-backend-localhost:latest
+    image: samurcorrea/rentaride-backend:latest
     container_name: rentaride2back
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5433/rentaride2
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 620759082
-      SPRING_PROFILES_ACTIVE: docker
-      UPLOAD_DIR: /app/uploads/
-       # Configuración para recursos estáticos
-      SPRING_WEB_RESOURCES_STATIC_LOCATIONS: file:/app/uploads/
-      SPRING_MVC_STATIC_PATH_PATTERN: /uploads/**
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/rentaride2"
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      SPRING_DATASOURCE_PASSWORD: "620759082"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: ""
+      SPRING_JPA_SHOW_SQL: "true"
+      LOGGING_LEVEL_ORG_HIBERNATE_SQL: "DEBUG"
+      LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL: "TRACE"
+      SPRING_PROFILES_ACTIVE: "docker"
+      UPLOAD_DIR: "/app/uploads/"
     ports:
       - "8080:8080"
-
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - app-network
 
+  # Frontend (Angular)
   frontend:
-    image: samurcorrea/rentaride-frontend-localhost:latest
+    image: samurcorrea/rentaride-frontend:latest
     container_name: rentaride2front
-    depends_on:
-      - backend
+    environment:
+      BACKEND_API_URL: "http://host.docker.internal:8080"  # Usa la IP del host
     ports:
       - "80:80"
-    environment:
-      BACKEND_API_URL: http://localhost:8080
-    volumes:
-      - ./uploads:/usr/share/nginx/uploads
+    depends_on:
+      - backend
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
+
+volumes:
+  postgres_data:
