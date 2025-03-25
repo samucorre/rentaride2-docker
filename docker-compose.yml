@@ -1,8 +1,8 @@
 services:
   # Base de datos PostgreSQL con datos pre-cargados
   postgres:
-    image: samurcorrea/rentaride2-postgres:latest
-    container_name: rentaride_postgres
+    image: samurcorrea/rentaride2-db:latest
+    container_name: rentaride2_postgres
     environment:
       POSTGRES_DB: rentaride2
       POSTGRES_USER: postgres
@@ -21,8 +21,8 @@ services:
 
   # Backend (Spring Boot)
   backend:
-    image: samurcorrea/rentaride3-backend:latest
-    container_name: rentaride2back
+    image: samurcorrea/rentaride2-back:latest
+    container_name: rentaride2backend
     environment:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/rentaride2"
       SPRING_DATASOURCE_USERNAME: "postgres"
@@ -43,8 +43,8 @@ services:
 
   # Frontend (Angular)
   frontend:
-    image: samurcorrea/rentaride3-frontend:latest
-    container_name: rentaride2front
+    image: samurcorrea/rentaride2-front:latest
+    container_name: rentaride2frontend
     environment:
       BACKEND_API_URL: "http://host.docker.internal:8080"  # Usa la IP del host
     ports:
