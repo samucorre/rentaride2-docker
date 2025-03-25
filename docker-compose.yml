@@ -1,7 +1,7 @@
 services:
   # Base de datos PostgreSQL con datos pre-cargados
   postgres:
-    image: samurcorrea/rentaride-postgres:latest
+    image: samurcorrea/rentaride2-postgres:latest
     container_name: rentaride_postgres
     environment:
       POSTGRES_DB: rentaride2
@@ -21,7 +21,7 @@ services:
 
   # Backend (Spring Boot)
   backend:
-    image: samurcorrea/rentaride-backend:latest
+    image: samurcorrea/rentaride2-backend:latest
     container_name: rentaride2back
     environment:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/rentaride2"
@@ -61,3 +61,4 @@ networks:
 
 volumes:
   postgres_data:
+  
