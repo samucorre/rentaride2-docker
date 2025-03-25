@@ -9,9 +9,11 @@ Este proyecto utiliza Docker y Docker Compose para levantar un entorno de desarr
 ## Requisitos
 
 - Docker Desktop y Docker Compose instalados en tu equipo.
+  
         Guía de instalacion Desktop: 
             - Windows:  https://docs.docker.com/desktop/setup/install/windows-install/
             - Linux:    https://docs.docker.com/desktop/setup/install/linux/
+  
         Guía de instalacion Compose: 
             -https://docs.docker.com/compose/install/
             
